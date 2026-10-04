@@ -298,6 +298,48 @@ def test_perform_direct_links_with_core():
     assert changed <= sites
 
 
+def test_the_perform_toggle_is_as_perform_levels_reads_it():
+    """The PERFORM toggle (0x40064aec): on, it copies the pattern's kit d2
+    into slot 0x80 (0x40035e12) and selects that; off, it selects kit d2
+    again (0x40036cba via d6) after `move.l $98(a2),-(sp) ; jsr (a3)`, the
+    site examples/perform-levels hooks. 0x40035e12 gets a kit from the
+    collection's vtable +0x30, copies 0x5574 bytes and calls +0x5c(kits,
+    slot, 0); +0x30 is base (+0x10) + slot * 0x5574."""
+    st, img = stock()
+    at = lambda a, n: img[a - DEV.main_load:a - DEV.main_load + n].hex()
+    assert word(img, 0x40064b8a) == 0x4023d1b3 and word(img, 0x40064bc2) == 0x4023d1c2
+    assert img[0x4023d1b3 - DEV.main_load:0x4023d1c2 - DEV.main_load] == b'Perform Kit=ON\x00'
+    assert at(0x40064b00, 6) == '2c3c40036cba'                  # d6 = the kit select
+    assert at(0x40064b4c, 6) == '47f940041d24'                  # a3 = kits = arg + 0xf4
+    assert at(0x40041d24, 10) == '202f00040680000000f4'
+    assert at(0x40064b60, 6) == '4eb940035e12'                  # on: copy d2 to slot 0x80
+    assert at(0x40064ba6, 16) == '2f2a00984e9342a742a72f0220462f00'   # off: the site, then
+    assert at(0x40064bb6, 2) == '4e90'                          # select(kits, d2, 0, 0)
+    assert at(0x40035e24, 4) == '48780080' and at(0x40035e2a, 4) == '20680030'
+    assert at(0x40035e3e, 4) == '48785574' and at(0x40035e46, 6) == '4eb940136388'
+    assert at(0x40035e56, 4) == '2068005c'
+    assert word(img, 0x401f2368 + 0x30) == 0x401a2206
+    assert at(0x401a2206, 28) == '2f02206f0008202800106710222f000c243c000055744c021800d081'
+
+
+def test_perform_levels_links_with_core():
+    """examples/perform-levels: one site, the PERFORM off path."""
+    with tempfile.TemporaryDirectory() as tmp:
+        core = built(os.path.join('mods', 'core-dt2'), tmp)
+        pl = built(os.path.join('examples', 'perform-levels'), tmp)
+        pd = built(os.path.join('examples', 'perform-direct'), tmp)
+        outputs, man = patch.build(SYX, [core, pl, pd], version='PL01', log=lambda *a: None)
+    st, img = stock()
+    new = formats.main_image(formats.parse(outputs['syx'], DEV), DEV)
+    a = 0x40064ba6 - DEV.main_load
+    assert new[a:a + 2] == b'\x4e\xb9' and new[a:a + 6] != img[a:a + 6]
+    lo, hi = man['link']['layout']['ddr']
+    assert lo <= int.from_bytes(new[a + 2:a + 6], 'big') < hi
+    changed = {i for i in range(len(img)) if new[i] != img[i]}
+    sites = {s - DEV.main_load + k for s, _ in CORE_SITES + ((0x40064ba6, ''),) for k in range(6)}
+    assert changed <= sites
+
+
 # ---- the flash: what the firmware reads and writes there (docs/DEVICES.md) ------------------
 
 def calls_to(img, target):

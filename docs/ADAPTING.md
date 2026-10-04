@@ -317,7 +317,8 @@ in 1.54 they are at the same addresses, but 0x400a1706 is 0x400a1862):
 of your own. It is a complete mod: a C handler on `ev_draw` that draws a
 small square in the top-right corner of every screen. For the Digitakt II,
 `examples/hello-marker-dt2/` builds the same source, and
-`examples/perform-direct/` is a real mod in one key handler.
+`examples/perform-direct/` is a real mod in one key handler, and
+`examples/perform-levels/` one with a site of its own (3.4).
 
 **3.2 Fill in `mod.json`.**
 

@@ -234,7 +234,8 @@ its bytes. See [docs/ADAPTING.md](docs/ADAPTING.md), section 4b.
 function on the draw event, and it puts a small square in the corner of
 every screen (`examples/hello-marker-dt2/` builds it for the Digitakt II).
 `examples/perform-direct/` is a real Digitakt II mod: [PRESET] toggles
-PERFORM without [FUNC]. Building code needs the device's cross toolchain;
+PERFORM without [FUNC]. `examples/perform-levels/` hooks a site of its
+own: track levels set in PERFORM KIT mode stay when you leave it. Building code needs the device's cross toolchain;
 for the Digitakt mk1 and the Digitakt II that is m68k binutils and gcc (Homebrew's `m68k-elf-*` work, with
 `ELEKLOADER_CROSS=m68k-elf-`).
 

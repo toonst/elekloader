@@ -156,6 +156,13 @@ below was found again in 1.17.
     test mod: key and encoder counts, a SETTINGS row, and
     a PERSONALIZE checkbox row. examples/perform-direct (a key swap) works
     on a unit, with core's other events registered but not used there.
+  - examples/perform-levels hooks the PERFORM KIT off path (0x40064ba6).
+    Turned on, the toggle copies the pattern's kit into a spare, slot 0x80
+    (kits at 0x426532b8, 0x5574 bytes each, track levels at +0x14).
+    Turned off, it selects the pattern's kit again. The mod copies the
+    levels across first. Checked in the emulator by writing slot 0x80
+    directly: the emulator shows encoder turns but applies none to a kit,
+    stock included. Confirmed on a unit (5 Oct 2026).
   - Not covered: anything a session in the emulator does not reach (no
     DSP, no samples, an empty +Drive) and the unit run did not use.
 
