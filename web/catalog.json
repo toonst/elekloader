@@ -297,6 +297,25 @@
       "sha256": "2b9ccbb39fa757ac68ac56ee248d7f4d2cd0f087a894944adaba450bd0932ba3",
       "summary": "Removes SPATIALIZER. USB audio both ways: 2 ch (MAIN) out, A-D in.",
       "on_unit": "Not yet run on a unit."
+    },
+    {
+      "repo": "toonst/digitakt2-perform", "tag": "v1.0", "file": "core-1.0.elemod",
+      "kind": "core", "device": "digitakt-mk2",
+      "sha256": "95303655a9358f581b485acb68b884b394a577f5d0b373f0a3e5957c8d0ca72c"
+    },
+    {
+      "repo": "toonst/digitakt2-perform", "tag": "v1.0", "file": "perform-direct-1.0.elemod",
+      "device": "digitakt-mk2",
+      "sha256": "601b187f5af3025234c83e8c077b1e8f4ac755a8f1a8c929ab03aff331f30732",
+      "summary": "[PRESET] alone toggles PERFORM KIT; [FUNC] + [PRESET] opens the PRESET/KIT menu.",
+      "on_unit": "The key swap works on a Digitakt II, OS 1.17 (an earlier version, which also had a PERSONALIZE row)."
+    },
+    {
+      "repo": "toonst/digitakt2-perform", "tag": "v1.0", "file": "perform-levels-1.0.elemod",
+      "device": "digitakt-mk2",
+      "sha256": "bb100389f2800401495ca3fa3a52d5974bb00434a8a70fd6f89978ec6b25d9e6",
+      "summary": "Track levels set in PERFORM KIT mode stay when you leave it; every other parameter goes back, as stock.",
+      "on_unit": "Works on a Digitakt II, OS 1.17."
     }
   ]
 }
