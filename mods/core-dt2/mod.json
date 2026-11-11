@@ -26,7 +26,7 @@
   "KIT_SIZE": "0x5574",
   "KIT_PAD": "0x573e",
   "KIT_ROOM": "194",
-  "PATTERN_OBJ": "0x44f370a0",
+  "PATTERN_OBJ": "0x44f370a0", "PROJECT_ON": "0x41776c9c",
   "MODS_STOCK": "0x400d9508",
   "LEDS_CLEAR": "0x4003098e",
   "FRAME_STRIDE": "71"
@@ -45,6 +45,7 @@
   {"addr": "0x400db8be", "stock": "223cbacef00c", "op": "jsr", "target": "core_kit_load"},
   {"addr": "0x400df932", "stock": "26bcbeefbace", "op": "jsr", "target": "core_proj_save"},
   {"addr": "0x400df99c", "stock": "203cbeefbace", "op": "jsr", "target": "core_proj_load"},
+  {"addr": "0x400e6094", "stock": "204242a80008", "op": "jsr", "target": "core_proj_new"},
   {"addr": "0x40136388", "stock": "226f0004206f0008202f000c", "op": "jmp", "target": "core_memcpy"}
  ],
  "subscribe": [{"event": "ev_tick", "fn": "core_fastcopy", "order": 0}],

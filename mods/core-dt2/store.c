@@ -270,6 +270,22 @@ void core_kitdata_load(const uint8_t *kit, const uint8_t *record)
         shadow_drop((uint32_t)kit);
 }
 
+/* CREATE NEW: the firmware initializes the project in RAM and loads no file, so
+ * neither load above runs. The new project has no data of the mods': zeros, and
+ * each mod is told as after a load that found none. */
+void core_store_new(void)
+{
+    for (const core_projdata_t *const *d = core_projdata; *d; d++) {
+        zero((*d)->data, (*d)->size);
+        if ((*d)->loaded)
+            (*d)->loaded(0);
+    }
+    if (!core_kitdata[0])
+        return;
+    for (int kit = 0; kit < CORE_KITS; kit++)
+        unpack(kit, 0);
+}
+
 void core_kit_copied(uint8_t *dst, const uint8_t *src)
 {
     static uint8_t tmp[ROOM_MAX];   /* not on the stack: memcpy runs on small task stacks too */

@@ -62,6 +62,7 @@ Its sites, each a whole instruction the shim runs too:
 | 0x400db8be | the same instruction in the kit loader (0x400db898), after its version check: a2 the kit, a3 the record | kit load |
 | 0x400df932 | `move.l #0xbeefbace,(a3)`, the file's mark, in the project save (0x400df66c) | project save |
 | 0x400df99c | `move.l #0xbeefbace,d0`, the load's (0x400df95a) check of that mark | project load |
+| 0x400e6094 | `movea.l d2,a0; clr.l 8(a0)` in the project's initializer, which CREATE NEW runs and a load does not: d2 the project. For the project on (0x41776c9c) the mods' project and kit data become zeros, and each mod is told as after a load that found none | a new project |
 | 0x40136388 | `memcpy`'s first 12 bytes, the loads of its three arguments, by jmp: a copy of a kit's size (0x5574) also calls `core_kit_copied` | kit copies |
 
 Each site and routine was found by the mk1's code, with the addresses

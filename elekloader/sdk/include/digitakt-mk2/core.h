@@ -17,7 +17,7 @@ extern void fw_led_set(void *mgr, int logical, int layer, int value);
  * Contribute a pointer to the descriptor to the table core_projdata and claim
  * projdata:<tag>, as on core-dn1 2.1. Saved with every save of the project,
  * taken out after a load (loaded(1)), or zeros and loaded(0) when the project
- * has none (saved without the mod). */
+ * has none (saved without the mod, or CREATE NEW). */
 typedef struct {
     char tag[4];
     uint32_t size;               /* bytes, a multiple of 4 */
@@ -33,10 +33,11 @@ typedef struct {
  * loaded, and copies them when the firmware copies a kit in RAM (pattern
  * copy and paste, PASTE KIT, undo), through the clipboard and undo buffers
  * too. Then it calls changed(kit, found): found 0 when the kit had none for
- * this layout (saved without the mod, or with another set of kit-data mods),
- * and the block holds zeros. changed may run in any task: keep it short. The
- * blocks of every mod share the room a record has (191 bytes); a block that
- * does not fit is left out (core_kitdata_room() tells). */
+ * this layout (saved without the mod, with another set of kit-data mods, or
+ * a kit of a new project), and the block holds zeros. changed may run in any
+ * task: keep it short. The blocks of every mod share the room a record has
+ * (191 bytes); a block that does not fit is left out (core_kitdata_room()
+ * tells). */
 #define CORE_KITS 128
 typedef struct {
     char tag[4];

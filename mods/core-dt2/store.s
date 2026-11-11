@@ -15,12 +15,16 @@
 |                 (0x400df66c) at 0x400df932: a3 the file; d0 is live after
 |   project load  move.l #0xbeefbace,d0, the load's (0x400df95a) check of the
 |                 mark at 0x400df99c: a3 the file
+|   project new   movea.l d2,a0 and clr.l 8(a0) in the project's initializer
+|                 (0x400e6094), which CREATE NEW runs and a load does not: d2
+|                 the project. The firmware initializes other buffers there
+|                 too: only the project on (PROJECT_ON) is the mods' business
 |   memcpy        its first 12 bytes (0x40136388), three loads of its
 |                 arguments, by jmp: a copy of a kit's size (KIT_SIZE) also
 |                 calls core_kit_copied(dst, src); every other copy goes on
 |                 into memcpy at once
         .section .run, "ax"
-        .globl  core_kit_save, core_kit_load, core_proj_save, core_proj_load, core_memcpy
+        .globl  core_kit_save, core_kit_load, core_proj_save, core_proj_load, core_proj_new, core_memcpy
         .globl  core_store_layout
 
 | The device's layout, for store.c: the kit table, its stride, the bytes of a
@@ -61,6 +65,24 @@ core_proj_load:
         jsr     core_projdata_load      | (file)
         addq.l  #4, %sp
         move.l  #0xbeefbace, %d0
+        rts
+
+| A new project. The instructions the site replaced leave X as it was, so the
+| call keeps the CCR; clr.l then sets the other flags as it did at the site.
+core_proj_new:
+        movea.l %d2, %a0
+        cmpa.l  #PROJECT_ON, %a0
+        bne.s   1f
+        lea     -20(%sp), %sp
+        movem.l %d0-%d1/%a0-%a1, (%sp)
+        move.w  %ccr, %d0
+        move.l  %d0, 16(%sp)
+        jsr     core_store_new
+        move.l  16(%sp), %d0
+        move.w  %d0, %ccr
+        movem.l (%sp), %d0-%d1/%a0-%a1
+        lea     20(%sp), %sp
+1:      clr.l   8(%a0)
         rts
 
 | memcpy(dst, src, n): the cost of every other copy is the compare and the branch.

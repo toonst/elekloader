@@ -253,7 +253,8 @@ The sites core owns (do not patch them):
   0x400ea41c;
 - Digitakt II 1.17: 0x40000538, 0x40032ad4, 0x40032b3a, 0x40033d94,
   0x40033dde, 0x400a5eac, 0x4009e2a2, 0x4002e90c, 0x400311a2,
-  0x400dbee4, 0x400db8be, 0x400df932, 0x400df99c and 0x40136388;
+  0x400dbee4, 0x400db8be, 0x400df932, 0x400df99c, 0x400e6094 and
+  0x40136388;
 - Digitone II 1.12: 0x40000538, 0x4002e464, 0x4002e4ca, 0x4002f20c,
   0x4002f256, 0x4009ff88, 0x400987a2, 0x4011fc8c, 0x4011f8c4,
   0x4012197a;
@@ -1494,7 +1495,9 @@ by setting the view controller's byte +0x21 (Brain + 0x40).
 The sites, each a whole instruction the core runs too (jsr, except
 `memcpy`'s first 12 bytes, by jmp): `ev_frame_params` 0x4002e90c,
 `ev_key_leds` 0x400311a2, kit save 0x400dbee4, kit load 0x400db8be,
-project save 0x400df932, project load 0x400df99c, `memcpy` 0x40136388.
+project save 0x400df932, project load 0x400df99c, a new project
+0x400e6094 (CREATE NEW: the mods' data become zeros, with `loaded(0)` and
+`changed(kit, 0)`), `memcpy` 0x40136388.
 mods/core-dt2/README.md has what each was.
 
 ### Mod storage (core-ar2 0.2, Analog Rytm MKII)
